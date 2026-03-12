@@ -8,6 +8,7 @@ from keras.preprocessing import image
 from keras.models import Sequential
 from keras.layers import Dense
 import os
+import gdown 
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -32,7 +33,18 @@ json_file.close()
 
 cnn_model = model_from_json(loaded_model_json)
 # load weights into new model
-cnn_model.load_weights("model_vgg.h5")
+
+MODEL_PATH = "model_vgg.h5"
+MODEL_URL = "https://drive.google.com/uc?id=1trKXtWlzWl_RtAPUpAOlX44arXAf1px1"  # replace with your file ID
+
+if not os.path.exists(MODEL_PATH):
+    print("Model weights not found locally. Downloading from Google Drive...")
+    gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
+
+# Load weights
+cnn_model.load_weights(MODEL_PATH)
+
+# cnn_model.load_weights("model_vgg.h5")
 # Load model
 
 IMAGE_SIZE = 150
